@@ -1,417 +1,699 @@
-<!DOCTYPE HTML>
+<!DOCTYPE html>
 <html lang="en">
-	<head>
-		<title>CCapture.js example with Conway's Game of Life in 3D</title>
-		<meta charset="utf-8">
-		<link rel="stylesheet" href="buttons.css" type="text/css" media="screen" title="no title" charset="utf-8">
-		<link href='https://fonts.googleapis.com/css?family=Roboto+Condensed:400,700' rel='stylesheet' type='text/css'>
-		<style type="text/css">
-		html {
-			height: 100%;
-		}
-		body {
-			margin: 0;
-			padding: 0;
-			background-color: #000;
-			color: #ffffff;
-			font-family: 'roboto condensed', sans-serif;
-			font-size: 13px;
-			line-height: 20px;
-			height: 100%;
-			overflow: hidden
-		}
-		#scroller{
-			position: absolute;
-			left: 0;
-			top: 0;
-			right: 0;
-			bottom: 0;
-			overflow: scroll;
-		}
-		#container{
-			position: absolute;
-			left: 0;
-			top: 0;
-			right: 0;
-			bottom: 0
-		}
-		a {
-			color: #fff;
-			text-decoration: none;
-			border-bottom: 1px dotted #fff;
-		}
-		a:hover {
-			border-bottom: 1px solid #fff
-		}
-		#title {
-			z-index: 100;
-			position: absolute;
-			top: 20px;
-			width: 300px;
-			left: 20px;
-			background-color: rgba(0,0,0,0.2);
-			border-radius: 3px;
-			padding: 10px;
-			overflow: auto;
-			-webkit-transition: opacity 1s ease-out;
-			-moz-transition: opacity 1s ease-out;
-		}
-		#options{
-			position: absolute;
-			top: 20px;
-			width: 300px;
-			right: 20px;
-			background-color: rgba(0,0,0,0.2);
-			border-radius: 3px;
-			padding: 10px;
-			overflow: hidden;
-		}
-		h1{
-			font-size: 20px;
-			margin: 0;
-		}
-		h2{
-			font-size: 16px;
-			margin: 0;
-		}
-		#preloader{
-			width: 306px;
-			height: 36px;
-			position: absolute;
-			left: 50%;
-			top: 50%;
-			margin-left: -153px;
-			margin-top: -18px;
-			background-color: rgba(255,255,255,0.8);
-			border-radius: 3px;
-			-webkit-transition: opacity 1s ease-out;
-			-moz-transition: opacity 1s ease-out;
-		}
-		#bar{
-			height: 30px;
-			position: absolute;
-			left: 50%;
-			top: 50%;
-			margin-left: -150px;
-			margin-top: -15px;
-			background-color: rgba(0,0,0,0.8);
-			border-radius: 3px;
-		}
-		#download-video-button{
-			display: none;
-		}
-		#progress{ position: absolute; left: 0; top: 0; z-index: 100; height: 10px; background-color: #b70000;}
-		</style>
-	</head>
-	<body>
+  <head>
+    <title>CCapture.js example with Conway's Game of Life in 3D</title>
+    <meta charset="utf-8" />
+    <link
+      rel="stylesheet"
+      href="buttons.css"
+      type="text/css"
+      media="screen"
+      title="no title"
+      charset="utf-8"
+    />
+    <link
+      href="https://fonts.googleapis.com/css?family=Roboto+Condensed:400,700"
+      rel="stylesheet"
+      type="text/css"
+    />
+    <style type="text/css">
+      html {
+        height: 100%;
+      }
 
-	<div id="scroller" >
-		<div id="title">
-			<h1>CCapture.js example</h1><h2>Game of Life in 3D</h2>
-			<p>Example of <a href="#" >ccapture.js</a> using <a href="http://www.clicktorelease.com/code/conway3d/" >Game of Life in 3D</a>.</p>
-			<p>This is a simple example of how to add a few lines of code to capture video out of a canvas-based animation.</p>
-			<p><b>Framerate</b><br/>
-				<input type="radio" name="framerate" id="encode-10" value="10" ></input> <label for="encode-10" >10FPS</label>
-				<input type="radio" name="framerate" id="encode-30" value="30" checked="checked" ></input></input> <label for="encode-30" >30FPS</label>
-				<input type="radio" name="framerate" id="encode-60" value="60" ></input></input> <label for="encode-60" >60FPS</label>
-				<input type="radio" name="framerate" id="encode-120" value="120" ></input></input> <label for="encode-120" >120FPS</label></p>
-			<p><b>Format</b><br/>
-				<input type="radio" name="encoder" id="encode-webm" value="webm" checked="checked" ></input> <label for="encode-webm" >WebM</label>
-				<input type="radio" name="encoder" id="encode-gif" value="gif" ></input></input> <label for="encode-gif" >GIF</label>
-				<input type="radio" name="encoder" id="encode-png" value="png" ></input></input> <label for="encode-png" >PNG</label>
-				<input type="radio" name="encoder" id="encode-jpg" value="jpg" ></input></input> <label for="encode-jpg" >JPEG</label></p>
-				<input type="radio" name="encoder" id="encode-webm-mediarecorder" value="webm-mediarecorder" ></input> <label for="encode-webm-mediarecorder" >WebM (MediaRecorder) <b>WIP</b></label>
-			<p><b>Other options</b><br/>
-				<input id="apply-motionblur" name="motion-blur" type="checkbox" /> <label for="apply-motionblur">Apply motion blur</label>
-			</p>
-			<a class="button" href="#" id="start-capturing-button" >Start recording</a>
-			<a class="button" href="#" id="download-video-button" >Stop recording and view capture</a>
+      body {
+        margin: 0;
+        padding: 0;
+        background-color: #000;
+        color: #ffffff;
+        font-family: "roboto condensed", sans-serif;
+        font-size: 13px;
+        line-height: 20px;
+        height: 100%;
+        overflow: hidden;
+      }
+
+      #scroller {
+        position: absolute;
+        left: 0;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        overflow: scroll;
+      }
+
+      #container {
+        position: absolute;
+        left: 0;
+        top: 0;
+        right: 0;
+        bottom: 0;
+      }
+
+      a {
+        color: #fff;
+        text-decoration: none;
+        border-bottom: 1px dotted #fff;
+      }
+
+      a:hover {
+        border-bottom: 1px solid #fff;
+      }
+
+      #title {
+        z-index: 100;
+        position: absolute;
+        top: 20px;
+        width: 300px;
+        left: 20px;
+        background-color: rgba(0, 0, 0, 0.2);
+        border-radius: 3px;
+        padding: 10px;
+        overflow: auto;
+        -webkit-transition: opacity 1s ease-out;
+        -moz-transition: opacity 1s ease-out;
+      }
+
+      #options {
+        position: absolute;
+        top: 20px;
+        width: 300px;
+        right: 20px;
+        background-color: rgba(0, 0, 0, 0.2);
+        border-radius: 3px;
+        padding: 10px;
+        overflow: hidden;
+      }
+
+      h1 {
+        font-size: 20px;
+        margin: 0;
+      }
+
+      h2 {
+        font-size: 16px;
+        margin: 0;
+      }
+
+      #preloader {
+        width: 306px;
+        height: 36px;
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        margin-left: -153px;
+        margin-top: -18px;
+        background-color: rgba(255, 255, 255, 0.8);
+        border-radius: 3px;
+        -webkit-transition: opacity 1s ease-out;
+        -moz-transition: opacity 1s ease-out;
+      }
+
+      #bar {
+        height: 30px;
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        margin-left: -150px;
+        margin-top: -15px;
+        background-color: rgba(0, 0, 0, 0.8);
+        border-radius: 3px;
+      }
+
+      #download-video-button {
+        display: none;
+      }
+
+      #progress {
+        position: absolute;
+        left: 0;
+        top: 0;
+        z-index: 100;
+        height: 10px;
+        background-color: #b70000;
+      }
+
+      #cube-container {
+        /* width: 200px;
+        height: 200px; */
+        /* perspective: 500px; */
+        transform-style: preserve-3d;
+        /* perspective: 500px; */
+        --bg-opacity: 1;
+      }
+
+      #cube {
+        margin: 0 auto;
+        --size: 100px;
+        width: var(--size);
+        height: var(--size);
+        position: relative;
+        transform-style: preserve-3d;
+        animation-delay: 1s;
+        /* animation: rotate 5s infinite linear; */
+        --bg-opacity: 1;
+        --z: calc(var(--size) / 2);
+      }
+
+      .face {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        /* line-height: 100px; */
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        font-size: 20px;
+        transform-style: preserve-3d;
+      }
+
+      .front {
+        background-color: rgba(255, 0, 0, var(--bg-opacity));
+        transform: translateZ(var(--z));
+      }
+
+      .back {
+        background-color: rgba(0, 255, 0, var(--bg-opacity));
+        transform: rotateY(180deg) translateZ(var(--z));
+        /* span {
+          transform: rotate(180deg);
+        } */
+      }
+
+      .top {
+        background-color: rgba(0, 0, 255, var(--bg-opacity));
+        transform: rotateX(90deg) translateZ(var(--z));
+      }
+
+      .bottom {
+        background-color: rgba(255, 255, 0, var(--bg-opacity));
+        transform: rotateX(-90deg) translateZ(var(--z));
+      }
+
+      .right {
+        background-color: rgba(255, 0, 255, var(--bg-opacity));
+        transform: rotateY(90deg) translateZ(var(--z));
+      }
+
+      .left {
+        background-color: rgba(0, 255, 255, var(--bg-opacity));
+        transform: rotateY(-90deg) translateZ(var(--z));
+      }
+
+      @keyframes rotate {
+        0% {
+          transform: rotateX(0) rotateY(0);
+        }
+
+        15% {
+          transform: rotateX(0) rotateY(0);
+        }
+
+        25% {
+          transform: rotateX(90deg) rotateY(0deg);
+        }
+
+        40% {
+          transform: rotateX(90deg) rotateY(0deg);
+        }
+
+        50% {
+          transform: rotateX(180deg) rotateY(0deg);
+        }
+
+        65% {
+          transform: rotateX(180deg) rotateY(0deg);
+        }
+
+        75% {
+          transform: rotateX(90deg) rotateY(0deg);
+        }
+
+        90% {
+          transform: rotateX(90deg) rotateY(0deg);
+        }
+      }
+    </style>
+  </head>
+
+  <body>
+    <div id="scroller">
+      <div id="title">
+        <h1>CCapture.js example</h1>
+        <h2>Game of Life in 3D</h2>
+        <p>
+          Example of <a href="#">ccapture.js</a> using
+          <a href="http://www.clicktorelease.com/code/conway3d/"
+            >Game of Life in 3D</a
+          >.
+        </p>
+        <p>
+          This is a simple example of how to add a few lines of code to capture
+          video out of a canvas-based animation.
+        </p>
+        <p>
+          <b>Framerate</b><br />
+          <input type="radio" name="framerate" id="encode-10" value="10" />
+          <label for="encode-10">10FPS</label>
+          <input
+            type="radio"
+            name="framerate"
+            id="encode-30"
+            value="30"
+            checked="checked"
+          /><label for="encode-30">30FPS</label>
+          <input type="radio" name="framerate" id="encode-60" value="60" />
+          <label for="encode-60">60FPS</label>
+          <input type="radio" name="framerate" id="encode-120" value="120" />
+          <label for="encode-120">120FPS</label>
+        </p>
+        <p>
+          <b>Format</b><br />
+          <input
+            type="radio"
+            name="encoder"
+            id="encode-webm"
+            value="webm"
+            checked="checked"
+          /><label for="encode-webm">WebM</label>
+          <input type="radio" name="encoder" id="encode-gif" value="gif" />
+          <label for="encode-gif">GIF</label>
+          <input type="radio" name="encoder" id="encode-png" value="png" />
+          <label for="encode-png">PNG</label>
+          <input
+            type="radio"
+            name="encoder"
+            id="encode-jpg"
+            value="jpg"
+          /><label for="encode-jpg">JPEG</label>
+        </p>
+        <input
+          type="radio"
+          name="encoder"
+          id="encode-webm-mediarecorder"
+          value="webm-mediarecorder"
+        />
+        <label for="encode-webm-mediarecorder"
+          >WebM (MediaRecorder) <b>WIP</b></label
+        >
+        <p>
+          <b>Other options</b><br />
+          <input id="apply-motionblur" name="motion-blur" type="checkbox" />
+          <label for="apply-motionblur">Apply motion blur</label>
+        </p>
+        <a class="button" href="#" id="start-capturing-button"
+          >Start recording</a
+        >
+        <a class="button" href="#" id="download-video-button"
+          >Stop recording and view capture</a
+        >
+      </div>
+    </div>
+
+    <div id="container"></div>
+
+    <!-- <div id="cube-container">
+		<div id="cube">
+		  <div class="face front">
+			<span>主播158cm</span>
+		  </div>
+		  <div class="face back">
+			<span>有运费险</span>
+		  </div>
+		  <div class="face top">
+			<span>Top</span>
+		  </div>
+		  <div class="face bottom">
+			<span>体重98斤</span>
+		  </div>
+		  <div class="face right">
+			<span>有运费险</span>
+		  </div>
+		  <div class="face left">
+			<span>Left</span>
+		  </div>
 		</div>
-	</div>
-
-	<div id="container" ></div>
-
-	<div id="progress"></div>
-
-	<a href="https://github.com/spite/ccapture.js"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://camo.githubusercontent.com/652c5b9acfaddf3a9c326fa6bde407b87f7be0f4/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f6f72616e67655f6666373630302e706e67" alt="Fork me on GitHub" data-canonical-src="https://s3.amazonaws.com/github/ribbons/forkme_right_orange_ff7600.png"></a>
-
-	<script type="text/javascript" src="./js/three.min.js"></script>
-	<script type="text/javascript" src="./js/Tween.js"></script>
-	<script type="text/javascript" src="./js/RequestAnimationFrame.js"></script>
-	<script type="text/javascript" src="./js/Detector.js"></script>
-	<script type="text/javascript" src="./js/OrbitControls.js"></script>
-
-	<script type="text/javascript" src="../../build/CCapture.all.min.js"></script>
-
-	<script type="text/javascript" >
-
-	var capturer;
-	var lon = 45, lat = 45, phi = 0, theta = 0;
-	var d = 40;
-
-	var container;
-	var camera, scene, renderer,
-	geometry, material, mesh, cubes = [];
-	var spotLight, spotLight2;
-	var controls;
-
-	if(!Detector.webgl){
-		Detector.addGetWebGLMessage();
-	} else {
-		window.addEventListener( 'load', init, false );
-	}
-
-	TWEEN.start();
-
-	var fov = 75;
-	var side = 10;
-	var size = 10;
-	var cells = [];
-	var tweens = [];
-	var timeout;
-	var lastTime = null;
-	var ellapsedTime = 0;
-
-	var title = document.getElementById( 'title' );
-
-	function init() {
-
-		container = document.getElementById( 'container' );
-
-		camera = new THREE.PerspectiveCamera( fov, window.innerWidth / window.innerHeight, 1, 2000 );
-		camera.position.z = 1000;
-
-		scene = new THREE.Scene();
-
-		geometry = new THREE.BoxBufferGeometry( size, size, size );
-
-		for( var z = 0; z < side; z++ ) {
-			for( var y = 0; y < side; y++ ) {
-				for( var x = 0; x < side; x++ ) {
-					var mesh = new THREE.Mesh(
-						geometry,
-						new THREE.MeshStandardMaterial( {
-							roughness: .5,
-							metalness: 0,
-							color: ( z * 255 / side ) * 256 * 256 + ( y * 255 / side ) * 256 + ( x * 255 / side ),
-							transparent: true
-						} )
-					);
-					scene.add( mesh );
-					mesh.castShadow = true;
-					mesh.receiveShadow = true;
-					mesh.position.x = ( x - .5 * side ) * size;
-					mesh.position.y = ( y - .5 * side ) * size;
-					mesh.position.z = ( z - .5 * side ) * size;
-					var conwayStatus = ( Math.random() < .1 );
-					mesh.conway = conwayStatus?1:0;
-					cubes.push( mesh );
-					cells.push( { status: conwayStatus } );
-					tweens.push( new TWEEN.Tween( mesh ).easing( TWEEN.Easing.Quadratic.EaseOut ) );
-				}
-			}
-		}
-
-		var mesh = new THREE.Mesh(
-			new THREE.IcosahedronGeometry( 1000, 3 ),
-			new THREE.MeshLambertMaterial( { color: Math.random() * 0xffffff, side: THREE.BackSide } )
-		);
-		scene.add( mesh );
-
-		spotLight = new THREE.SpotLight( 0xff170f, 1, 3000, 2, .5 );
-		spotLight.position.set( 150, 400, 350 );
-		spotLight.castShadow = true;
-		spotLight.angle = Math.PI / 4;
-		spotLight.penumbra = 0.5;
-		spotLight.decay = .5;
-		spotLight.distance = 2000;
-		spotLight.shadow.mapSize.width = 1024;
-		spotLight.shadow.mapSize.height = 1024;
-		spotLight.shadow.camera.near = 1;
-		spotLight.shadow.camera.far = 1000;
-
-		scene.add( spotLight );
-
-		spotLight2 = new THREE.SpotLight( 0xffcf0f, 1, 3000, 2, .5 );
-		spotLight2.position.set( 0, -400, -1800 );
-		spotLight2.castShadow = true;
-		spotLight2.angle = Math.PI / 4;
-		spotLight2.penumbra = 0.5;
-		spotLight2.decay = .5;
-		spotLight2.distance = 2000;
-		spotLight2.shadow.mapSize.width = 1024;
-		spotLight2.shadow.mapSize.height = 1024;
-		spotLight2.shadow.camera.near = 1;
-		spotLight2.shadow.camera.far = 200;
-
-		scene.add( spotLight2 );
-
-		renderer = new THREE.WebGLRenderer( { antialias: true, alpha: true });
-		renderer.sortObjects = false;
-    renderer.setPixelRatio(window.devicePixelRatio);
-		renderer.setSize( window.innerWidth, window.innerHeight );
-    renderer.setClearColor(0,0);
-
-		renderer.shadowMap.enabled = true;
-		renderer.shadowMap.type = THREE.PCFSoftShadowMap
-
-		container.appendChild( renderer.domElement );
-
-		controls = new THREE.OrbitControls( camera, renderer.domElement );
-
-		window.addEventListener( 'resize', onWindowResize, false );
-
-		onWindowResize();
-
-		lastTime = Date.now();
-
-		capturer = null;
-
-		var sCB = document.getElementById( 'start-capturing-button' ),
-			dVB = document.getElementById( 'download-video-button' ),
-			progress = document.getElementById( 'progress' );
-
-		sCB.addEventListener( 'click', function( e ) {
-
-			var framerate = document.querySelector('input[name="framerate"]:checked').value;
-
-			capturer = new CCapture( {
-				verbose: false,
-				display: true,
-				framerate: framerate,
-				motionBlurFrames: ( 960 / framerate ) * ( document.querySelector('input[name="motion-blur"]').checked ? 1 : 0 ),
-				quality: 99,
-				format: document.querySelector('input[name="encoder"]:checked').value,
-				workersPath: '../../src/',
-				timeLimit: 4,
-				frameLimit: 0,
-				autoSaveTime: 0,
-				onProgress: function( p ) { progress.style.width = ( p * 100 ) + '%' }
-			} );
-
-			capturer.start();
-			this.style.display = 'none';
-			dVB.style.display = 'block';
-			e.preventDefault();
-		}, false );
-
-		dVB.addEventListener( 'click', function( e ) {
-			capturer.stop();
-			this.style.display = 'none';
-			//this.setAttribute( 'href',  );
-			capturer.save();
-		}, false );
-
-		animate();
-		next();
-
-	}
-
-	function onWindowResize( event ) {
-		if( renderer ) {
-			renderer.setSize( window.innerWidth, window.innerHeight );
-			camera.aspect = window.innerWidth / window.innerHeight;
-			camera.updateProjectionMatrix();
-		}
-	}
-
-	function animate() {
-
-		requestAnimationFrame( animate );
-		render();
-
-	}
-
-	function evaluateCell( current ) {
-
-		var status = cells[ current ].status;
-		var count = 0;
-		for( var z = -1; z <=1; z++ ) {
-			for( var y = -1; y <=1; y++ ) {
-				for( var x = -1; x <=1; x++ ) {
-					var p = current + z * side * side + y * side + x;
-					if( cells[ p ] && cells[ p ].status ) {
-						count++;
-					}
-
-				}
-			}
-		}
-
-		if( count > 4 ) return false;
-		if( count < 3 ) return false;
-		if( count == 4 ) return true;
-		return status;
-	}
-
-	function next() {
-
-		var nextGen = [];
-
-		var p = 0;
-		for( var z = 0; z < side; z++ ) {
-			for( var y = 0; y < side; y++ ) {
-				for( var x = 0; x < side; x++ ) {
-					nextGen[ p ] = { status: evaluateCell( p ) };
-					p++;
-				}
-			}
-		}
-
-		cells = nextGen;
-
-		for( var p = 0, m = cells.length; p < m; p++ ) {
-			tweens[ p ].to( { conway: cells[ p ].status?1:0 }, 1000 ).start();
-		}
-
-		timeout = setTimeout( next, 2000 );
-
-	}
-
-
-	function render() {
-
-		controls.update();
-
-		var currentTime = Date.now();
-		currentTime = performance.now();;
-		ellapsedTime = currentTime - lastTime;
-
-		for( var p = 0, m = cells.length; p < m; p++ ) {
-			cubes[ p ].material.opacity = cubes[ p ].conway;
-			cubes[ p ].rotation.y = Math.PI * cubes[ p ].conway;
-			var s = cubes[ p ].conway;
-			if( s < .001 ) s = .001;
-			cubes[ p ].scale.set( s, s, s );
-		}
-
-		lon += 1.5 * ellapsedTime / ( 1000.0 / 60.0 );
-
-		lat = Math.max( - 85, Math.min( 85, lat ) );
-		phi = ( 90 - lat ) * Math.PI / 180;
-		theta = lon * Math.PI / 180;
-
-		//d = 140 + 100 * Math.sin( .01 * currentTime );
-		camera.position.x = d * Math.sin( phi ) * Math.cos( theta );
-		camera.position.y = d * Math.cos( phi );
-		camera.position.z = d * Math.sin( phi ) * Math.sin( theta );
-		camera.lookAt( scene.position );
-		camera.rotation.z = .001 * currentTime;
-
-		var dl = 400;
-		var t = 0.0003 * currentTime;
-		spotLight.position.set( camera.position.x, camera.position.y + 50, camera.position.z );//dl * Math.sin( t ), dl * Math.cos( t ), dl * Math.cos( t ) * Math.sin( t ) );
-		var t = .00025 * currentTime;
-		spotLight2.position.set( dl * Math.sin( t ) * Math.cos( t ), dl * Math.sin( t ), dl * Math.cos( t ) );
-
-		renderer.render( scene, camera );
-		if( capturer ) capturer.capture( renderer.domElement );
-
-		lastTime = currentTime;
-	}
-
-	</script>
-
-</body>
-
+	  </div> -->
+
+    <div id="progress"></div>
+
+    <a href="https://github.com/spite/ccapture.js"
+      ><img
+        style="position: absolute; top: 0; right: 0; border: 0"
+        src="https://camo.githubusercontent.com/652c5b9acfaddf3a9c326fa6bde407b87f7be0f4/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f6f72616e67655f6666373630302e706e67"
+        alt="Fork me on GitHub"
+        data-canonical-src="https://s3.amazonaws.com/github/ribbons/forkme_right_orange_ff7600.png"
+    /></a>
+
+    <script type="importmap">
+      {
+        "imports": {
+          "three": "https://cdn.jsdelivr.net/npm/three@0.166.1/build/three.module.js",
+          "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.166.1/examples/jsm/"
+        }
+      }
+    </script>
+    <script type="text/javascript" src="./js/three.min.js"></script>
+    <script type="text/javascript" src="./js/Tween.js"></script>
+    <script type="text/javascript" src="./js/RequestAnimationFrame.js"></script>
+    <script type="text/javascript" src="./js/Detector.js"></script>
+    <script type="text/javascript" src="./js/OrbitControls.js"></script>
+
+    <script
+      type="text/javascript"
+      src="../../build/CCapture.all.min.js"
+    ></script>
+
+    <script type="module">
+      import * as THREE from "three";
+      import { OrbitControls } from "three/addons/controls/OrbitControls.js";
+      import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
+      import { FontLoader } from "three/addons/loaders/FontLoader.js";
+      import { TextGeometry } from "three/addons/geometries/TextGeometry.js";
+      import {
+        CSS3DRenderer,
+        CSS3DObject,
+        CSS3DSprite,
+      } from "three/addons/renderers/CSS3DRenderer.js";
+      const myFont = new FontFace(
+        "myFont",
+        "url(../../assets/yibiyihuachaoheiti-2.ttf)"
+      );
+      var capturer;
+      var lon = 45,
+        lat = 45,
+        phi = 0,
+        theta = 0;
+      var d = 40;
+
+      var container;
+      var camera,
+        scene,
+        renderer,
+        geometry,
+        material,
+        mesh,
+        cubes = [];
+      var spotLight, spotLight2;
+      var controls;
+
+      const fontLoader = new FontLoader();
+
+      if (!Detector.webgl) {
+        Detector.addGetWebGLMessage();
+      } else {
+        window.addEventListener(
+          "load",
+          () => {
+            myFont
+              .load()
+              .then((font) => {
+                document.fonts.add(font);
+              })
+              .then(() => init());
+          },
+          false
+        );
+      }
+
+      TWEEN.start();
+
+      var fov = 75;
+      var side = 10;
+      var size = 10;
+      var cells = [];
+      var tweens = [];
+      var myTween;
+      var timeout;
+      var lastTime = null;
+      var ellapsedTime = 0;
+
+      var title = document.getElementById("title");
+      var canvas;
+
+      var object, css3DRenderer;
+
+      function init() {
+        container = document.getElementById("container");
+
+        renderer = new THREE.WebGLRenderer({
+          antialias: true,
+          preserveDrawingBuffer: true,
+        });
+        renderer.setPixelRatio(window.devicePixelRatio);
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        // renderer.setClearColor(0x000000);
+        renderer.setClearColor(0x00ff00);
+        container.appendChild(renderer.domElement);
+
+        css3DRenderer = new CSS3DRenderer();
+        css3DRenderer.setSize(window.innerWidth, window.innerHeight);
+        css3DRenderer.domElement.style.position = "absolute";
+        css3DRenderer.domElement.style.top = 0;
+        css3DRenderer.domElement.style.left = 0;
+        css3DRenderer.domElement.style.pointerEvents = "none";
+        container.appendChild(css3DRenderer.domElement);
+
+        canvas = renderer.domElement;
+
+        scene = new THREE.Scene();
+        scene.background = new THREE.Color(0x00ff00);
+
+        camera = new THREE.PerspectiveCamera(
+          40,
+          window.innerWidth / window.innerHeight,
+          1,
+          2000
+        );
+        camera.position.set(0, 25, 0);
+        scene.add(camera);
+
+        controls = new OrbitControls(camera, renderer.domElement);
+        // controls.minDistance = 20;
+        // controls.maxDistance = 50;
+        // controls.maxPolarAngle = Math.PI / 2;
+
+        // const texture  =  new THREE.TextureLoader()
+        const text = getTextObject("有运费险");
+        const text1 = getTextObject("主播", "156cm");
+        const text2 = getTextObject("体重", "92斤");
+
+        text.position.set(0, 0, 2.51);
+        text1.position.set(0, 2.51, 0);
+        text1.rotateX(-Math.PI / 2);
+        text2.position.set(2.51, 0, 0);
+        text2.rotateY(Math.PI / 2);
+        // fontLoader.load('../../assets/YEFONTZhaoPaiTi_Regular.json', (res) => {
+        // 	var geometry = new TextGeometry(`有运费险`, {
+        // 		font: res,          // 字体格式
+        // 		size: 0.8,           // 字体大小
+        // 		height: 0.1,          // 字体深度
+        // 		// curveSegments: 11,  // 曲线控制点数
+        // 		// bevelEnabled: true, // 斜角
+        // 		// bevelThickness: 0.1,  // 斜角的深度
+        // 		// bevelSize: 1,       // 斜角的大小
+        // 		// bevelSegments: 1    // 斜角段数
+        // 	});
+        // 	var mat = new THREE.MeshPhongMaterial({ color: 0xFFFFFF });
+        // 	var mesh = new THREE.Mesh(geometry, mat);
+        // 	mesh.position.set(-2.5, 0, 2.5)
+        // 	// mesh.rotation.y = -Math.PI / 2
+        // 	// mesh.position.set(-151, 150 - 40 * index, 15.1);
+        // 	scene.add(mesh);
+
+        // })
+        const geometry = new THREE.BoxGeometry(5, 5, 5);
+        const material = [
+          new THREE.MeshBasicMaterial({ color: "black" }), // right
+          new THREE.MeshBasicMaterial({ color: "black" }), // left
+          new THREE.MeshBasicMaterial({ color: "black" }), // top
+          new THREE.MeshBasicMaterial({ color: "black" }), // bottom
+          new THREE.MeshBasicMaterial({ color: "black" }), // back
+          new THREE.MeshBasicMaterial({ color: "black" }), // front
+        ];
+
+        object = new THREE.Mesh(geometry, material);
+        object.add(text, text1, text2);
+        // object = new CSS3DObject(document.querySelector("#cube-container"));
+        // object.scale.set(0.05, 0.05, 0.05);
+        scene.add(object);
+
+        console.log(new THREE.Vector3(0, 0, 0));
+
+        myTween = new TWEEN.Tween({ x: 0 });
+        myTween.to({ x: -Math.PI / 2 }, 2000).delay(1000);
+
+        const tween1 = new TWEEN.Tween({ y: 0 })
+          .to({ y: -Math.PI / 2 }, 2000)
+          .delay(1000);
+        const tween2 = new TWEEN.Tween(object.rotation)
+          .to({ y: 0 }, 2000)
+          .delay(1000);
+        const tween3 = new TWEEN.Tween(object.rotation)
+          .to({ x: 0 }, 2000)
+          .delay(1000);
+
+        myTween.chain(tween1);
+        tween1.chain(tween2);
+        tween2.chain(tween3);
+
+        myTween.onUpdate(function () {
+          object.rotation.x = this.x;
+        });
+        tween1.onUpdate(function () {
+          object.rotation.y = this.y;
+        });
+        tween2.onUpdate(function () {
+          object.rotation.y = this.y;
+        });
+        tween3.onUpdate(function () {
+          object.rotation.x = this.x;
+        });
+
+        // tween2.onUpdate(function () {
+        //   object.rotation.y = -this.z;
+        // });
+
+        controls.update();
+
+        lastTime = Date.now();
+
+        capturer = null;
+
+        var sCB = document.getElementById("start-capturing-button"),
+          dVB = document.getElementById("download-video-button"),
+          progress = document.getElementById("progress");
+
+        sCB.addEventListener(
+          "click",
+          function (e) {
+            var framerate = document.querySelector(
+              'input[name="framerate"]:checked'
+            ).value;
+
+            capturer = new CCapture({
+              verbose: false,
+              display: true,
+              framerate: framerate,
+              motionBlurFrames:
+                (960 / framerate) *
+                (document.querySelector('input[name="motion-blur"]').checked
+                  ? 1
+                  : 0),
+              quality: 99,
+              format: document.querySelector('input[name="encoder"]:checked')
+                .value,
+              workersPath: "../../src/",
+              // timeLimit: 4,
+              // frameLimit: 0,
+              // autoSaveTime: 0,
+              onProgress: function (p) {
+                progress.style.width = p * 100 + "%";
+              },
+            });
+
+            capturer.start();
+            myTween.start();
+            this.style.display = "none";
+            dVB.style.display = "block";
+            e.preventDefault();
+          },
+          false
+        );
+
+        dVB.addEventListener(
+          "click",
+          function (e) {
+            capturer.stop();
+            this.style.display = "none";
+            //this.setAttribute( 'href',  );
+            capturer.save();
+          },
+          false
+        );
+
+        render();
+
+        // window.addEventListener("resize", onWindowResize);
+      }
+
+      function render(timestamp) {
+        // 如果是第一次调用，初始化lastTime
+        if (!lastTime) {
+          lastTime = timestamp;
+        }
+        // 计算时间间隔
+        var deltaTime = timestamp - lastTime;
+
+        // required if controls.enableDamping or controls.autoRotate are set to true
+        controls.update();
+        // object.rotation.x += 0.01;
+        // object.rotation.y += 0.01;
+        // preview.src = renderer.domElement.toDataURL();
+        css3DRenderer.render(scene, camera);
+        renderer.render(scene, camera);
+        // 更新lastTime
+        lastTime = timestamp;
+
+        TWEEN.update();
+        requestAnimationFrame(render);
+        if (capturer) capturer.capture(renderer.domElement);
+      }
+
+      function getTextObject(text, text1) {
+        //用canvas生成图片
+        let canvas = document.createElement("canvas");
+        let ctx = canvas.getContext("2d");
+        const width = 200;
+        const height = 200;
+        canvas.width = width;
+        canvas.height = height;
+        //制作矩形
+        // ctx.fillStyle = "red";
+        //设置文字
+        const grd = ctx.createRadialGradient(
+          width / 2,
+          height / 2,
+          10,
+          100,
+          width / 2,
+          height / 2
+        );
+        grd.addColorStop(0, "#E89595");
+        grd.addColorStop(1, "#BA502D");
+        ctx.fillStyle = grd;
+        ctx.fillRect(0, 0, width, height);
+
+        ctx.fillStyle = "white";
+        const lineHeight = 40;
+        ctx.font = `${lineHeight}px myFont`;
+
+        ctx.textBaseline = "middle";
+        ctx.textAlign = "center";
+        ctx.fillText(
+          text,
+          width / 2,
+          text1 ? height / 2 - lineHeight / 2 - 5 : height / 2
+        );
+        text1 &&
+          ctx.fillText(text1, width / 2, height / 2 + lineHeight / 2 + 5);
+
+        //生成图片
+        let url = canvas.toDataURL("image/png");
+        // window.open(url)
+        //将图片构建到纹理中
+        let geometry1 = new THREE.PlaneGeometry(5, 5);
+        let material1 = new THREE.MeshBasicMaterial({
+          map: new THREE.TextureLoader().load(url),
+          side: THREE.DoubleSide,
+          opacity: 1,
+        });
+        // material1.transparent = true;
+        let rect = new THREE.Mesh(geometry1, material1);
+        // rect.scale.set(0.2, 0.2, 0.2);
+        return rect;
+      }
+    </script>
+  </body>
 </html>
